@@ -17,5 +17,9 @@ FEED_EXPORTERS = {
     'sqlite': 'aasjobs.exporters.SqliteItemExporter',
 }
 
+ITEM_PIPELINE = {
+    'aasajobs.pipeline.DuplicatesPipeline': 500
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'aasjobs (+http://www.yourdomain.com)'

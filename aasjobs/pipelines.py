@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from scrapy.exceptions import DropItem
 
 # Define your item pipelines here
 #
@@ -9,3 +10,15 @@
 class AasjobsPipeline(object):
     def process_item(self, item, spider):
         return item
+
+class DuplicatesPipeline(object):
+
+    def __init__(self):
+        self.ids_seen = set()
+
+    def process_item(self, item, spider):
+        if item['jobid'] in self.ids_seen:
+            raise DropItem("Duplicate item found: %s" % item)
+        else:
+            self.ids_seen.add(item['jobid'])
+            return item

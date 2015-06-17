@@ -18,7 +18,7 @@ class AASJobsSpider(CrawlSpider):
     rules = (
         # Extract links matching 'category.php' (but not matching 'subsection.php')
         # and follow links from them (since no callback means follow=True by default).
-        Rule( LinkExtractor(allow=('issue', )), follow=False),
+        Rule( LinkExtractor(allow=('issue\?year=[\d]+&month=[\d]+', ))),#, follow=False),
 
         # Extract links matching 'item.php' and parse them with the spider's method parse_item
         Rule(LinkExtractor(allow=('JobID', ), unique=True), callback='parse_item', follow=False),
@@ -26,6 +26,11 @@ class AASJobsSpider(CrawlSpider):
 
     def __init__(self, year=None, month=None):
         super(AASJobsSpider, self).__init__()
+        # urls = []
+        # for year in [2014]:
+        #     for month in [3, 4]:
+        #         urls.append('https://jobregister.aas.org/archives/issue?year=%s&month=%s' % (year, month))
+        # self.start_urls = urls
         if year:
             if month:
                 self.start_urls = ['https://jobregister.aas.org/archives/issue?year=%s&month=%s' % (year, month)]
@@ -43,10 +48,10 @@ class AASJobsSpider(CrawlSpider):
         jobid = int(re.findall('JobID=(\d+)', response.url)[0])
         title = re.findall(
             '(.*) - JRID\d',
-            response.xpath('//h2[@class="title"]/a/text()')[0].extract()
+            response.xpath('//h2[@class="title"]/a//text()')[0].extract()
             )[0]
         job['jobid'] = jobid
-        job['title'] = title
+        job['title'] = title.encode('utf-8')
 
         fielditems = response.xpath('//div[contains(concat(" ",normalize-space(@class)," "), " field-item " )]')
         # default values
@@ -68,10 +73,10 @@ class AASJobsSpider(CrawlSpider):
         # job description
         desc = response.xpath('//div[@class="field field-type-text field-field-job-announcement"]//div[@class="field-item odd"]//text()').extract()
         descstr = '\n'.join([s.strip() for s in desc if s.strip()])
-        job['postdate'] = postdate
-        job['deadline'] = deadline
-        job['category'] = category
-        job['link'] = response.url
-        job['description'] = descstr
+        job['postdate'] = postdate.encode('utf-8')
+        job['deadline'] = deadline.encode('utf-8')
+        job['category'] = category.encode('utf-8')
+        job['link'] = response.url.encode('utf-8')
+        job['description'] = descstr.encode('utf-8')
         # self.log('Job category %s' % (category), log.INFO)
         yield job
