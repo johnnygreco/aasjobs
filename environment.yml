@@ -1,0 +1,9 @@
+name: aasjobs
+
+dependencies:
+  - python=3
+  - scrapy
+  - numpy
+  - matplotlib
+  - scipy
+  - scrapy
