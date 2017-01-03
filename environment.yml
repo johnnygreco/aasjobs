@@ -7,3 +7,8 @@ dependencies:
   - matplotlib
   - scipy
   - scrapy
+  - pandas
+  - jupyter
+  - flask
+  - pip:
+    - altair

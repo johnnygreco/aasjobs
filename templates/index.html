@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title>AAS Jobs Stat</title>
+      <meta name="description" content="">
+      <meta name="author" content="">
+
+      <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- FONT
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+          <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+          <!-- CSS
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+            <link rel="stylesheet" href="static/css/normalize.css">
+            <link rel="stylesheet" href="static/css/skeleton.css">
+
+            <!-- Favicon
+              –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+              <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+
+              <!-- ChartJS -->
+              <script src="static/Chart.min.js"></script>
+
+              <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  </head>
+  <body>
+
+    <!-- Primary Page Layout
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <div class="container">
+
+        <h2 style="margin-top: 2%">AAS Job Archive</h2>
+
+        <div class="row">
+          <div class="six columns">
+            <form action="">
+              <input name="keyword" id="searchbox" type="text" size="40" placeholder="Type keywords here..."></input>
+              <input class="button-primary" type="submit">
+            </form>
+          </div>
+          <div class="six columns">
+            <button id="clear">Clear</button>
+          </div>
+        </div>
+
+        {% if searchword %}
+        {% endif %}
+
+        <canvas id="yearCount" width="600" height="300"></canvas>
+        {% if stats %}
+        <div class="row">
+          <div class="eight columns">
+            <canvas id="yearCount" width="600" height="300"></canvas>
+          </div>
+          <div class="four columns">
+            <a class="button" href="#">{{ searchword | truncate(15, True)}}</a>
+          </div>
+        </div>
+        {% endif %}
+
+
+        {% if result %}
+        <table>
+          {% for year, title in result %}
+          <tr>
+            <td>{{ year }}</td>
+            <td>{{ title }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+        <p> No results for {{ searchword }}</p>
+        {% endif %}
+
+        <div id="listing"></div>
+      </div>
+
+      <script src="static/draw.js"></script>
+
+      <!-- End Document
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  </body>
+</html>
